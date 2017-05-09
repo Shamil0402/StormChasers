@@ -141,7 +141,6 @@ public class Panel extends JPanel {
 		textField_1.setColumns(10);
 
 		JButton btnNewButton = new JButton("\u041F\u043E\u0441\u0442\u0430\u0432\u0438\u0442\u044C");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				players = textField.getText().split(", ");
