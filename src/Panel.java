@@ -313,8 +313,6 @@ public class Panel extends JPanel {
 
 						String value = townsList.get(selectedIndex).value;
 						String name = townsList.get(selectedIndex).name;
-						textField.setText(name);
-						textField.setText(value);
 						/*
 						 * if (townsList.get(selectedIndex).isSelected == false)
 						 * { selectedIndex = -1; }
@@ -450,7 +448,7 @@ public class Panel extends JPanel {
 			}
 			String[] Array = lines.toArray(new String[lines.size()]);
 			System.out.println(Array.length);
-			BufferedImage table = new BufferedImage(810, time * 31, BufferedImage.TYPE_INT_RGB);
+			BufferedImage table = new BufferedImage(810, time * 30, BufferedImage.TYPE_INT_RGB);
 
 			Graphics g = (Graphics2D) table.getGraphics();
 
@@ -569,7 +567,7 @@ public class Panel extends JPanel {
 	 */
 
 	public void generateParameters() {
-		li = AverageLi + (int) (Math.random() * (AverageLi + 3));
+		li = AverageLi-2 + (int) (Math.random() * (AverageLi + 3));
 		cape = AverageCape - 2000 + (int) (Math.random() * (AverageCape + 2000));
 		hydro = AverageHydro - 20 + (int) (Math.random() * (AverageHydro));
 		temp = AverageTemp - 5 + (int) (Math.random() * (AverageTemp + 5));
@@ -677,22 +675,40 @@ public class Panel extends JPanel {
 							addToArrayFront(1 + (int) (Math.random() * 2), 0, 1 + (int) (Math.random() * 7));
 						}
 					}
+					for (int i = 0; i < frontList.size(); i++) {
+						for (int j = 0; j < townsList.size(); j++) {
+							oldFrontCounter = frontCounter;
+							if (Math.abs(frontList.get(i).x - townsList.get(j).getX()) <= 20) {
+								frontCounter++;
+							}
+							if (oldFrontCounter != frontCounter) {
+								townsList.get(j).isFront = frontList.get(i).type;
 
+							} else {
+								townsList.get(j).isFront = 0;
+							}
+
+						}
+
+					}
 					for (int i = 0; i < townsList.size(); i++) {
 						generateParameters();
 						townsList.get(i).li = li;
 						townsList.get(i).cape = cape;
 						townsList.get(i).hydro = hydro;
 						townsList.get(i).temp = temp;
-						if (townsList.get(i).isFront == 1) {
+						if(townsList.get(i).isFront==1){
 							townsList.get(i).li -= 3;
 							townsList.get(i).cape += 700;
 							townsList.get(i).temp -= 5;
-						} else if (townsList.get(i).isFront == 2) {
+							
+						}
+						else if(townsList.get(i).isFront==2){
 							townsList.get(i).li -= 1;
-							townsList.get(i).cape += 200;
+							townsList.get(i).cape += 400;
 							townsList.get(i).temp += 5;
 						}
+						
 						if (hydro > 100) {
 							hydro = 100;
 						}
@@ -744,21 +760,7 @@ public class Panel extends JPanel {
 							}
 						}
 					}
-					for (int i = 0; i < frontList.size(); i++) {
-						for (int j = 0; j < townsList.size(); j++) {
-							oldFrontCounter = frontCounter;
-							if (Math.abs(frontList.get(i).x - townsList.get(i).getX()) <= 20) {
-								frontCounter++;
-							}
-							if (oldFrontCounter != frontCounter) {
-								townsList.get(j).isFront = frontList.get(i).type;
-							} else {
-								townsList.get(j).isFront = 0;
-							}
 
-						}
-
-					}
 					SaveMapImg();
 					time++;
 					SaveWeather();
