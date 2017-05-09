@@ -1,4 +1,5 @@
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -140,6 +141,7 @@ public class Panel extends JPanel {
 		textField_1.setColumns(10);
 
 		JButton btnNewButton = new JButton("\u041F\u043E\u0441\u0442\u0430\u0432\u0438\u0442\u044C");
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				players = textField.getText().split(", ");
@@ -154,24 +156,24 @@ public class Panel extends JPanel {
 		add(btnNewButton);
 
 		JLabel lblLiftedIndex = new JLabel("\u0421\u0440\u0435\u0434\u043D\u0438\u0439 lifted index:");
-		lblLiftedIndex.setBounds(402, 152, 138, 14);
+		lblLiftedIndex.setBounds(402, 152, 174, 14);
 		add(lblLiftedIndex);
 
 		JLabel lblCape = new JLabel("\u0421\u0440\u0435\u0434\u043D\u0438\u0439 CAPE:");
-		lblCape.setBounds(402, 97, 138, 14);
+		lblCape.setBounds(402, 97, 174, 14);
 		add(lblCape);
 
 		JLabel label_2 = new JLabel("\u041F\u0435\u0440\u0438\u043E\u0434:");
-		label_2.setBounds(402, 328, 52, 14);
+		label_2.setBounds(402, 328, 62, 14);
 		add(label_2);
 
 		textField_2 = new JTextField();
-		textField_2.setBounds(454, 325, 31, 20);
+		textField_2.setBounds(463, 325, 31, 20);
 		add(textField_2);
 		textField_2.setColumns(10);
 
 		JLabel lbltq = new JLabel("\u0447\u0430\u0441\u043E\u0432");
-		lbltq.setBounds(494, 328, 46, 14);
+		lbltq.setBounds(505, 328, 46, 14);
 		add(lbltq);
 
 		JLabel lblNewLabel_1 = new JLabel("");
@@ -264,7 +266,7 @@ public class Panel extends JPanel {
 
 		JLabel label_3 = new JLabel(
 				"\u0421\u0440\u0435\u0434\u043D\u044F\u044F \u0432\u043B\u0430\u0436\u043D\u043E\u0441\u0442\u044C:");
-		label_3.setBounds(402, 265, 138, 14);
+		label_3.setBounds(402, 265, 174, 14);
 		add(label_3);
 
 		JLabel lblNewLabel_4 = new JLabel("");
@@ -285,32 +287,12 @@ public class Panel extends JPanel {
 
 		JLabel label_7 = new JLabel(
 				"\u0412\u0435\u0440\u043E\u044F\u0442\u043D\u043E\u0441\u0442\u044C \u0433\u0440\u043E\u0437\u044B:");
-		label_7.setBounds(10, 316, 115, 14);
+		label_7.setBounds(10, 316, 154, 14);
 		add(label_7);
-
-		JLabel label_date = new JLabel("\u0414\u0430\u0442\u0430:");
-		label_date.setBounds(10, 373, 46, 14);
-		add(label_date);
-
-		JLabel lblMonth = new JLabel("");
-		lblMonth.setBounds(49, 373, 21, 14);
-		add(lblMonth);
-
-		JLabel lblDay = new JLabel("");
-		lblDay.setBounds(74, 373, 21, 14);
-		add(lblDay);
-
-		JLabel label_8 = new JLabel("\u0412\u0440\u0435\u043C\u044F:");
-		label_8.setBounds(10, 401, 46, 14);
-		add(label_8);
 
 		JLabel lblHours = new JLabel("");
 		lblHours.setBounds(49, 401, 21, 14);
 		add(lblHours);
-
-		JLabel label_9 = new JLabel(".");
-		label_9.setBounds(66, 373, 2, 14);
-		add(label_9);
 
 		addMouseListener(new MouseListener() {
 
@@ -435,9 +417,7 @@ public class Panel extends JPanel {
 		} catch (Exception ex) {
 		}
 		mapImgNumber++;
-		
-		
-		
+
 	}
 
 	public void SaveWeather() {
@@ -512,7 +492,7 @@ public class Panel extends JPanel {
 			ImageIO.write(table, "png", new File("weather/" + Array[0] + ".png"));
 			reader.close();
 		}
-		
+
 	}
 
 	public void Update() {
@@ -605,184 +585,190 @@ public class Panel extends JPanel {
 	 */
 
 	public void startGeneration() {
+
 		File maps = new File("maps");
 		maps.mkdirs();
 		File weather = new File("weather");
 		weather.mkdirs();
 		saveDefaultMap();
-
-		int timeLimit = Integer.parseInt(textField_2.getText());
-		Timer generation = new Timer(100, new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (time >= timeLimit) {
-					((Timer) arg0.getSource()).stop();
-					try {
-						SaveWeatherToImg();
-						SaveGif();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}					
-
-				}
-				for (int i = 0; i < frontList.size(); i++) {
-					if (frontList.get(i).x + 10 >= boundMapX) {
-						remove(frontList.get(i));
-						frontList.remove(i);
-						repaint();
-					}
-				}
-
-				for (int i = 0; i < thunderList.size(); i++) {
-					thunderList.get(i).motion();
-					if ((thunderList.get(i).x >= boundMapX) || (thunderList.get(i).y >= boundMapY)
-							|| (thunderList.get(i).x2 >= boundMapX) || (thunderList.get(i).x >= boundMapY)) {
-						thunderList.get(i).isDead = true;
-					}
-
-					for (int j = 0; j < thunderList.get(i).strikeList.size(); j++) {
-						thunderList.get(i).strikeList.get(j).increaseTime();
-						repaint();
-						if (thunderList.get(i).strikeList.get(j).time >= 25) {
-							remove((thunderList.get(i).strikeList.get(j)));
-							thunderList.get(i).strikeList.remove(j);
-							repaint();
-							// updateThunder();
+		if (textField_2.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "¬ведите период!");
+		} else {
+			int timeLimit = Integer.parseInt(textField_2.getText());
+			Timer generation = new Timer(100, new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					if (time >= timeLimit) {
+						((Timer) arg0.getSource()).stop();
+						try {
+							SaveWeatherToImg();
+							SaveGif();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
 
 					}
-					/*
-					 * if
-					 * ((thunderList.get(i).x>=boundMapX)||(thunderList.get(i).y
-					 * >=boundMapY)
-					 * ||(thunderList.get(i).x2>=boundMapX)||(thunderList.get(i)
-					 * .x>= boundMapY)){ for (int x = 0; x<100;x++){ for (int j
-					 * = 0; j < thunderList.get(i).strikeList.size(); j++) {
-					 * remove((thunderList.get(i).strikeList.get(j)));
-					 * thunderList.get(i).strikeList.remove(j); repaint(); } }
-					 * thunderList.remove(i); repaint();
-					 * 
-					 * }
-					 */
-					if (thunderList.get(i).time >= thunderList.get(i).limitTime) {
-						thunderList.get(i).isDead = true;
-						boolean fullDead = false;
-						for (int j = 0; j < thunderList.get(i).strikeList.size(); j++) {
-							if (thunderList.get(i).strikeList.size() == 0) {
-								fullDead = true;
-							}
+					for (int i = 0; i < frontList.size(); i++) {
+						if (frontList.get(i).x + 10 >= boundMapX) {
+							remove(frontList.get(i));
+							frontList.remove(i);
+							repaint();
+						}
+					}
 
-							if (fullDead) {
+					for (int i = 0; i < thunderList.size(); i++) {
+						thunderList.get(i).motion();
+						if ((thunderList.get(i).x >= boundMapX) || (thunderList.get(i).y >= boundMapY)
+								|| (thunderList.get(i).x2 >= boundMapX) || (thunderList.get(i).x >= boundMapY)) {
+							thunderList.get(i).isDead = true;
+						}
+
+						for (int j = 0; j < thunderList.get(i).strikeList.size(); j++) {
+							thunderList.get(i).strikeList.get(j).increaseTime();
+							repaint();
+							if (thunderList.get(i).strikeList.get(j).time >= 25) {
 								remove((thunderList.get(i).strikeList.get(j)));
 								thunderList.get(i).strikeList.remove(j);
 								repaint();
-								thunderList.remove(i);
+								// updateThunder();
+							}
+
+						}
+						/*
+						 * if
+						 * ((thunderList.get(i).x>=boundMapX)||(thunderList.get(
+						 * i).y >=boundMapY)
+						 * ||(thunderList.get(i).x2>=boundMapX)||(thunderList.
+						 * get(i) .x>= boundMapY)){ for (int x = 0; x<100;x++){
+						 * for (int j = 0; j <
+						 * thunderList.get(i).strikeList.size(); j++) {
+						 * remove((thunderList.get(i).strikeList.get(j)));
+						 * thunderList.get(i).strikeList.remove(j); repaint(); }
+						 * } thunderList.remove(i); repaint();
+						 * 
+						 * }
+						 */
+						if (thunderList.get(i).time >= thunderList.get(i).limitTime) {
+							thunderList.get(i).isDead = true;
+							boolean fullDead = false;
+							for (int j = 0; j < thunderList.get(i).strikeList.size(); j++) {
+								if (thunderList.get(i).strikeList.size() == 0) {
+									fullDead = true;
+								}
+
+								if (fullDead) {
+									remove((thunderList.get(i).strikeList.get(j)));
+									thunderList.get(i).strikeList.remove(j);
+									repaint();
+									thunderList.remove(i);
+								}
+							}
+
+						}
+
+					}
+
+					for (int i = 0; i < frontList.size(); i++) {
+						frontList.get(i).motion();
+					}
+
+					if (time % 72 == 0) {
+						int chanceFront = (int) (Math.random() * 100);
+						if (chanceFront >= 50) {
+							addToArrayFront(1 + (int) (Math.random() * 2), 0, 1 + (int) (Math.random() * 7));
+						}
+					}
+
+					for (int i = 0; i < townsList.size(); i++) {
+						generateParameters();
+						townsList.get(i).li = li;
+						townsList.get(i).cape = cape;
+						townsList.get(i).hydro = hydro;
+						townsList.get(i).temp = temp;
+						if (townsList.get(i).isFront == 1) {
+							townsList.get(i).li -= 3;
+							townsList.get(i).cape += 700;
+							townsList.get(i).temp -= 5;
+						} else if (townsList.get(i).isFront == 2) {
+							townsList.get(i).li -= 1;
+							townsList.get(i).cape += 200;
+							townsList.get(i).temp += 5;
+						}
+						if (hydro > 100) {
+							hydro = 100;
+						}
+					}
+					for (int i = 0; i < frontList.size(); i++) {
+						int thunderChance = calcThunderChance() - 20
+								+ (int) (Math.random() * (calcThunderChance() + 20));
+						if (thunderChance >= 50) {
+							if (frontList.get(i).type == 1) {
+								int x = frontList.get(i).x + (int) (Math.random() * (frontList.get(i).x + 20));
+								int y = (int) (Math.random() * (boundMapY - 30));
+								addToArrayThunder(3 + (int) (Math.random() * 10), x, y, x + (int) (Math.random() * 40),
+										y + (int) (Math.random() * 40), (int) (Math.random() * 7),
+										(int) (Math.random() * 7));
+							} else {
+								int x = frontList.get(i).x + (int) (Math.random() * (frontList.get(i).x + 20));
+								int y = (int) (Math.random() * (boundMapY - 30));
+								addToArrayThunder(2 + (int) (Math.random() * 4), x, y, x + (int) (Math.random() * 40),
+										y + (int) (Math.random() * 40), (int) (Math.random() * 7),
+										(int) (Math.random() * 7));
 							}
 						}
-
 					}
-
-				}
-
-				for (int i = 0; i < frontList.size(); i++) {
-					frontList.get(i).motion();
-				}
-
-				if (time % 72 == 0) {
-					int chanceFront = (int) (Math.random() * 100);
-					if (chanceFront >= 50) {
-						addToArrayFront(1 + (int) (Math.random() * 2), 0, 1 + (int) (Math.random() * 7));
-					}
-				}
-
-				for (int i = 0; i < townsList.size(); i++) {
-					generateParameters();
-					townsList.get(i).li = li;
-					townsList.get(i).cape = cape;
-					townsList.get(i).hydro = hydro;
-					townsList.get(i).temp = temp;
-					if (townsList.get(i).isFront == 1) {
-						townsList.get(i).li -= 3;
-						townsList.get(i).cape += 700;
-						townsList.get(i).temp -= 5;
-					} else if (townsList.get(i).isFront == 2) {
-						townsList.get(i).li -= 1;
-						townsList.get(i).cape += 200;
-						townsList.get(i).temp += 5;
-					}
-					if (hydro > 100) {
-						hydro = 100;
-					}
-				}
-				for (int i = 0; i < frontList.size(); i++) {
 					int thunderChance = calcThunderChance() - 20 + (int) (Math.random() * (calcThunderChance() + 20));
 					if (thunderChance >= 50) {
-						if (frontList.get(i).type == 1) {
-							int x = frontList.get(i).x + (int) (Math.random() * (frontList.get(i).x + 20));
-							int y = (int) (Math.random() * (boundMapY - 30));
-							addToArrayThunder(3 + (int) (Math.random() * 10), x, y, x + (int) (Math.random() * 40),
-									y + (int) (Math.random() * 40), (int) (Math.random() * 7),
-									(int) (Math.random() * 7));
-						} else {
-							int x = frontList.get(i).x + (int) (Math.random() * (frontList.get(i).x + 20));
-							int y = (int) (Math.random() * (boundMapY - 30));
-							addToArrayThunder(2 + (int) (Math.random() * 4), x, y, x + (int) (Math.random() * 40),
-									y + (int) (Math.random() * 40), (int) (Math.random() * 7),
-									(int) (Math.random() * 7));
+						int x = 0 + (int) (Math.random() * (boundMapX - 30));
+						int y = (int) (Math.random() * (boundMapY - 30));
+						addToArrayThunder(2 + (int) (Math.random() * 6), x, y, x + (int) (Math.random() * 40),
+								y + (int) (Math.random() * 40), (int) (Math.random() * 7), (int) (Math.random() * 7));
+					}
+					// Update();
+					for (int i = 0; i < thunderList.size(); i++) {
+						thunderList.get(i).generateStrikes((int) (Math.random() * 10));
+						thunderList.get(i).increaseTime();
+						repaint();
+						updateThunder();
+						for (int j = 0; j < townsList.size(); j++) {
+							oldThunderCounter = thunderCounter;
+							if ((thunderList.get(i).x - 10 <= townsList.get(j).getX())
+									&& (townsList.get(j).getX() <= thunderList.get(i).x2 + 10)
+									&& (thunderList.get(i).y - 10 <= townsList.get(j).getY())
+									&& (townsList.get(j).getY() <= thunderList.get(i).y2 + 10)) {
+								thunderCounter++;
+							}
+							if (oldThunderCounter != thunderCounter) {
+								townsList.get(j).isThunder = 1;
+							} else {
+								townsList.get(j).isThunder = 0;
+							}
 						}
 					}
-				}
-				int thunderChance = calcThunderChance() - 20 + (int) (Math.random() * (calcThunderChance() + 20));
-				if (thunderChance >= 50) {
-					int x = 0 + (int) (Math.random() * (boundMapX - 30));
-					int y = (int) (Math.random() * (boundMapY - 30));
-					addToArrayThunder(2 + (int) (Math.random() * 6), x, y, x + (int) (Math.random() * 40),
-							y + (int) (Math.random() * 40), (int) (Math.random() * 7), (int) (Math.random() * 7));
-				}
-				// Update();
-				for (int i = 0; i < thunderList.size(); i++) {
-					thunderList.get(i).generateStrikes((int) (Math.random() * 10));
-					thunderList.get(i).increaseTime();
-					repaint();
-					updateThunder();
-					for (int j = 0; j < townsList.size(); j++) {
-						oldThunderCounter = thunderCounter;
-						if ((thunderList.get(i).x - 10 <= townsList.get(j).getX())
-								&& (townsList.get(j).getX() <= thunderList.get(i).x2 + 10)
-								&& (thunderList.get(i).y - 10 <= townsList.get(j).getY())
-								&& (townsList.get(j).getY() <= thunderList.get(i).y2 + 10)) {
-							thunderCounter++;
-						}
-						if (oldThunderCounter != thunderCounter) {
-							townsList.get(j).isThunder = 1;
-						} else {
-							townsList.get(j).isThunder = 0;
-						}
-					}
-				}
-				for (int i = 0; i < frontList.size(); i++) {
-					for (int j = 0; j < townsList.size(); j++) {
-						oldFrontCounter = frontCounter;
-						if (Math.abs(frontList.get(i).x - townsList.get(i).getX()) <= 20) {
-							frontCounter++;
-						}
-						if (oldFrontCounter != frontCounter) {
-							townsList.get(j).isFront = frontList.get(i).type;
-						} else {
-							townsList.get(j).isFront = 0;
+					for (int i = 0; i < frontList.size(); i++) {
+						for (int j = 0; j < townsList.size(); j++) {
+							oldFrontCounter = frontCounter;
+							if (Math.abs(frontList.get(i).x - townsList.get(i).getX()) <= 20) {
+								frontCounter++;
+							}
+							if (oldFrontCounter != frontCounter) {
+								townsList.get(j).isFront = frontList.get(i).type;
+							} else {
+								townsList.get(j).isFront = 0;
+							}
+
 						}
 
 					}
+					SaveMapImg();
+					time++;
+					SaveWeather();
 
 				}
-				SaveMapImg();
-				time++;
-				SaveWeather();
+			});
 
-			}
-		});
-		generation.start();
-
+			generation.start();
+		}
 	}
 
 	public void saveDefaultMap() {
