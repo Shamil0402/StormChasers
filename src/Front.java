@@ -28,7 +28,7 @@ public class Front extends JComponent {
 
 	public Front(int type, int X, int speed) {
 		try {
-			skin = ImageIO.read(new File("img/front"+type+".png"));
+			skin = ImageIO.read(getClass().getResourceAsStream("img/front"+type+".png")/*new File("img/front"+type+".png")*/);
 		} catch (IOException e) {
 			System.out.println("Warning");
 		}

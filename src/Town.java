@@ -30,7 +30,7 @@ public class Town extends JComponent {
 
 	public Town(String name, String value, int id, int X, int Y, boolean isSelected) {
 		try {
-			skin = ImageIO.read(new File("img/town.png"));
+			skin = ImageIO.read(getClass().getResourceAsStream("img/town.png")/*new File("img/town.png")*/);
 		} catch (IOException e) {
 			System.out.println("Warning");
 		}
