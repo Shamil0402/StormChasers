@@ -21,7 +21,7 @@ public class Strike extends JComponent {
 
 	public Strike(int X, int Y) {
 		try {
-			skin = ImageIO.read(getClass().getResourceAsStream("img/strike" + time + ".png")/*new File("img/strike" + time + ".png")*/);
+			skin = ImageIO.read(getClass().getResourceAsStream("img/strike" + time + ".png"))/*new File("img/strike" + time + ".png")*/;
 		} catch (IOException e) {
 			System.out.println("Warning");
 		}

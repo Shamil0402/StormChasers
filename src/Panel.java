@@ -40,6 +40,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JTextField;
 import javax.swing.JTextField;
+import javax.swing.JProgressBar;
 
 public class Panel extends JPanel {
 	/**
@@ -75,6 +76,7 @@ public class Panel extends JPanel {
 	int oldFrontCounter = 0;
 	int thunderCounter = 0;
 	int oldThunderCounter = 0;
+	JProgressBar progressBar = new JProgressBar();
 
 	/**
 	 * Create the panel.
@@ -292,6 +294,11 @@ public class Panel extends JPanel {
 		JLabel lblHours = new JLabel("");
 		lblHours.setBounds(49, 401, 21, 14);
 		add(lblHours);
+		
+		progressBar = new JProgressBar();
+		progressBar.setStringPainted(true);
+		progressBar.setBounds(10, 394, 344, 31);
+		add(progressBar);
 
 		addMouseListener(new MouseListener() {
 
@@ -592,6 +599,7 @@ public class Panel extends JPanel {
 			JOptionPane.showMessageDialog(null, "¬ведите период!");
 		} else {
 			int timeLimit = Integer.parseInt(textField_2.getText());
+			progressBar.setMaximum(timeLimit);
 			Timer generation = new Timer(100, new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if (time >= timeLimit) {
@@ -764,7 +772,7 @@ public class Panel extends JPanel {
 					SaveMapImg();
 					time++;
 					SaveWeather();
-
+					progressBar.setValue(time);
 				}
 			});
 
