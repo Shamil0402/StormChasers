@@ -456,7 +456,7 @@ public class Panel extends JPanel {
 
 			g.setColor(new Color(255, 255, 255));
 			g.fillRect(0, 0, table.getWidth(), table.getHeight());
-			g.setColor(Color.BLUE);
+			g.setColor(Color.BLACK);
 			g.drawString(Array[0], 10, 30);
 			g.drawString(Array[1], 200, 30);
 			g.drawString("CAPE", 10, 60);
@@ -478,22 +478,66 @@ public class Panel extends JPanel {
 					String hydro = Array[i + 5];
 					String isThunder = Array[i + 6];
 					String isFront = Array[i + 7];
+					if(Integer.parseInt(cape)<=2000){
+						g.setColor(Color.GREEN);
+					}
+					else if(Integer.parseInt(cape)<=4000){
+						g.setColor(Color.YELLOW);
+					}
+					else if(Integer.parseInt(cape)>4000){
+						g.setColor(Color.RED);
+					}
 					g.drawString(cape, 10, (i / 8) * 30 + 90);
+					
+					
+					if(Integer.parseInt(li)<=-3){
+						g.setColor(Color.RED);
+					}
+					else if(Integer.parseInt(li)<=0){
+						g.setColor(Color.ORANGE);
+					}
+					else if(Integer.parseInt(li)<=5){
+						g.setColor(Color.YELLOW);
+					}else{
+						g.setColor(Color.GREEN);
+					}
 					g.drawString(li, 110, (i / 8) * 30 + 90);
+					if(Integer.parseInt(temp)>=30){
+						g.setColor(Color.RED);
+					}
+					else if(Integer.parseInt(temp)>=20){
+						g.setColor(Color.ORANGE);
+					}
+					else if(Integer.parseInt(temp)>=10){
+						g.setColor(Color.YELLOW);
+					}
+					else if(Integer.parseInt(temp)>0){
+						g.setColor(Color.GREEN);
+					}
+					else{
+						g.setColor(Color.BLUE);
+					}
+					
 					g.drawString(temp, 170, (i / 8) * 30 + 90);
+					g.setColor(Color.BLACK);
 					g.drawString(hydro, 400, (i / 8) * 30 + 90);
-
+					
 					if (Integer.parseInt(isThunder) == 1) {
+						g.setColor(Color.GREEN);
 						g.drawString("Да", 600, (i / 8) * 30 + 90);
 					} else {
+						g.setColor(Color.RED);
 						g.drawString("Нет", 600, (i / 8) * 30 + 90);
 					}
 
 					if (Integer.parseInt(isFront) == 1) {
+						g.setColor(Color.BLUE);
 						g.drawString("ХФ", 720, (i / 8) * 30 + 90);
 					} else if (Integer.parseInt(isFront) == 2) {
+						g.setColor(Color.RED);
 						g.drawString("ТФ", 720, (i / 8) * 30 + 90);
 					} else {
+						g.setColor(Color.BLACK);
 						g.drawString("Нет", 720, (i / 8) * 30 + 90);
 					}
 
@@ -800,6 +844,8 @@ public class Panel extends JPanel {
 									&& (thunderList.get(i).y - 10 <= townsList.get(j).getY())
 									&& (townsList.get(j).getY() <= thunderList.get(i).y2 + 10)) {
 								thunderCounter++;
+								townsList.get(j).temp-=5;
+								townsList.get(j).hydro+=10;
 							}
 							if (oldThunderCounter != thunderCounter) {
 								townsList.get(j).isThunder = 1;
