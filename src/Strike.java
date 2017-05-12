@@ -1,12 +1,8 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 
 public class Strike extends JComponent {
 	/**
@@ -21,7 +17,7 @@ public class Strike extends JComponent {
 
 	public Strike(int X, int Y) {
 		try {
-			skin = ImageIO.read(new File("img/strike" + time + ".png"));
+			skin = ImageIO.read(getClass().getResourceAsStream("img/strike" + time + ".png"))/*new File("img/strike" + time + ".png")*/;
 		} catch (IOException e) {
 			System.out.println("Warning");
 		}
@@ -37,7 +33,7 @@ public class Strike extends JComponent {
 		time+=5;
 
 		try {
-			skin = ImageIO.read(new File("img/strike" + time + ".png"));
+			skin = ImageIO.read(getClass().getResourceAsStream("img/strike" + time + ".png"));
 		} catch (IOException e) {
 		//	System.out.println("Warning strike");
 		}

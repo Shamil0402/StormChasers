@@ -1,12 +1,8 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 
 public class Front extends JComponent {
 	/**
@@ -28,7 +24,7 @@ public class Front extends JComponent {
 
 	public Front(int type, int X, int speed) {
 		try {
-			skin = ImageIO.read(new File("img/front"+type+".png"));
+			skin = ImageIO.read(getClass().getResourceAsStream("img/front"+type+".png")/*new File("img/front"+type+".png")*/);
 		} catch (IOException e) {
 			System.out.println("Warning");
 		}
