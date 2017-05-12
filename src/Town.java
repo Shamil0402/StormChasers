@@ -4,7 +4,6 @@ import javax.swing.border.LineBorder;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
 
 public class Town extends JComponent {

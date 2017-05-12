@@ -1,9 +1,7 @@
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JLabel;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
@@ -11,7 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
 
-import org.omg.CORBA.Environment;
 
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionListener;
@@ -32,14 +29,11 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.JCheckBox;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import javax.swing.JTextField;
-import javax.swing.JTextField;
 import javax.swing.JProgressBar;
 
 public class Panel extends JPanel {
@@ -318,8 +312,8 @@ public class Panel extends JPanel {
 
 						selectedIndex = i;
 
-						String value = townsList.get(selectedIndex).value;
-						String name = townsList.get(selectedIndex).name;
+						//String value = townsList.get(selectedIndex).value;
+						//String name = townsList.get(selectedIndex).name;
 						/*
 						 * if (townsList.get(selectedIndex).isSelected == false)
 						 * { selectedIndex = -1; }
@@ -396,12 +390,11 @@ public class Panel extends JPanel {
 	}
 
 	public void SaveGif() throws IOException {
-		int timeLimit = Integer.parseInt(textField_2.getText());
 		// grab the output image type from the first image in the sequence
 		BufferedImage firstImage = ImageIO.read(new File("maps/defaultMap.png"));
 
 		ImageOutputStream output = new FileImageOutputStream(new File("maps/animated.gif"));
-		GifSequenceWriter writer = new GifSequenceWriter(output, firstImage.getType(), 10, true);
+		GifSequenceWriter writer = new GifSequenceWriter(output, firstImage.getType(), 30, true);
 
 		writer.writeToSequence(firstImage);
 		for (int i = 0; i < mapImgNumber; i++) {
@@ -644,7 +637,7 @@ public class Panel extends JPanel {
 						for (int j = 0; j < thunderList.get(i).strikeList.size(); j++) {
 							thunderList.get(i).strikeList.get(j).increaseTime();
 							repaint();
-							if (thunderList.get(i).strikeList.get(j).time >= 25) {
+							if (thunderList.get(i).strikeList.get(j).time >= 30) {
 								remove((thunderList.get(i).strikeList.get(j)));
 								thunderList.get(i).strikeList.remove(j);
 								repaint();
@@ -763,7 +756,7 @@ public class Panel extends JPanel {
 					boolean isThunderPlaced = false;
 					for (int i = 0; i < townsList.size(); i++) {
 						isThunderPlaced = false;
-						if ((int) (Math.random() * 100) <= 20) {
+						if ((int) (Math.random() * 100) <= 30) {
 							if (calcThunderChance(townsList.get(i).li, townsList.get(i).hydro, townsList.get(i).temp,
 									townsList.get(i).cape) >= 50) {
 								int x = townsList.get(i).getX() - 50 + (int) (Math.random() * 100);
