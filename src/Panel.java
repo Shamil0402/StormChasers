@@ -98,7 +98,7 @@ public class Panel extends JPanel {
 		slider_thunderChance.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				if (isNaturaly) {
-					slider_thunderChance.setValue(calcThunderChance());
+					slider_thunderChance.setValue(calcThunderChance(AverageLi, AverageHydro, AverageTemp, AverageCape));
 				}
 				lblNewLabel_5.setText(Integer.toString(slider_thunderChance.getValue()));
 			}
@@ -112,7 +112,7 @@ public class Panel extends JPanel {
 		chckbxNewCheckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!isNaturaly) {
-					slider_thunderChance.setValue(calcThunderChance());
+					slider_thunderChance.setValue(calcThunderChance(AverageLi, AverageHydro, AverageTemp, AverageCape));
 					slider_thunderChance.setEnabled(false);
 				} else {
 					slider_thunderChance.setEnabled(true);
@@ -148,8 +148,8 @@ public class Panel extends JPanel {
 				players = textField.getText().split(", ");
 				towns = textField_1.getText().split(", ");
 				for (int i = 0; i < players.length; i++) {
-					addToArrayTown(players[i], towns[i], (int) (Math.random() * boundMapX),
-							(int) (Math.random() * boundMapY), false);
+					addToArrayTown(players[i], towns[i], (int) (Math.random() * (boundMapX-100)),
+							(int) (Math.random() * (boundMapY-30)), false);
 				}
 			}
 		});
@@ -191,7 +191,7 @@ public class Panel extends JPanel {
 			public void stateChanged(ChangeEvent e) {
 				lblNewLabel_2.setText(Integer.toString(slider_cape.getValue()));
 				AverageCape = slider_cape.getValue();
-				slider_thunderChance.setValue(calcThunderChance());
+				slider_thunderChance.setValue(calcThunderChance(AverageLi, AverageHydro, AverageTemp, AverageCape));
 			}
 		});
 		slider_cape.setMaximum(7000);
@@ -204,7 +204,7 @@ public class Panel extends JPanel {
 			public void stateChanged(ChangeEvent arg0) {
 				lblNewLabel_1.setText(Integer.toString(slider_li.getValue()));
 				AverageLi = slider_li.getValue();
-				slider_thunderChance.setValue(calcThunderChance());
+				slider_thunderChance.setValue(calcThunderChance(AverageLi, AverageHydro, AverageTemp, AverageCape));
 			}
 		});
 		slider_li.setMaximum(20);
@@ -235,7 +235,7 @@ public class Panel extends JPanel {
 			public void stateChanged(ChangeEvent arg0) {
 				lblNewLabel_3.setText(Integer.toString(slider_temp.getValue()));
 				AverageTemp = slider_temp.getValue();
-				slider_thunderChance.setValue(calcThunderChance());
+				slider_thunderChance.setValue(calcThunderChance(AverageLi, AverageHydro, AverageTemp, AverageCape));
 			}
 		});
 		slider_temp.setMaximum(50);
@@ -279,7 +279,7 @@ public class Panel extends JPanel {
 			public void stateChanged(ChangeEvent arg0) {
 				lblNewLabel_4.setText(Integer.toString(slider_hydro.getValue()));
 				AverageHydro = slider_hydro.getValue();
-				slider_thunderChance.setValue(calcThunderChance());
+				slider_thunderChance.setValue(calcThunderChance(AverageLi, AverageHydro, AverageTemp, AverageCape));
 			}
 		});
 		slider_hydro.setValue(0);
@@ -308,7 +308,7 @@ public class Panel extends JPanel {
 				for (int i = 0; i < townsList.size(); i++) {
 					if ((townsList.get(i).getX() <= arg0.getX()) && (arg0.getX() <= townsList.get(i).getX() + 100)
 							&& (townsList.get(i).getY() <= arg0.getY())
-							&& (arg0.getY() <= townsList.get(i).getY() + 100)) {
+							&& (arg0.getY() <= townsList.get(i).getY() + 30)) {
 
 						/*
 						 * if (selectedIndex != -1) {
@@ -351,7 +351,7 @@ public class Panel extends JPanel {
 				for (int i = 0; i < townsList.size(); i++) {
 					if ((townsList.get(i).getX() <= arg0.getX()) && (arg0.getX() <= townsList.get(i).getX() + 100)
 							&& (townsList.get(i).getY() <= arg0.getY())
-							&& (arg0.getY() <= townsList.get(i).getY() + 100)) {
+							&& (arg0.getY() <= townsList.get(i).getY() + 30)) {
 						/*
 						 * townsList.get(i).screenX = arg0.getX();
 						 * townsList.get(i).screenY = arg0.getY();
@@ -569,11 +569,11 @@ public class Panel extends JPanel {
 
 	}
 
-	public int calcThunderChance() {
-		if ((AverageLi > 2) || (AverageHydro < 20) || (AverageTemp < -3)) {
+	public int calcThunderChance(int Li, int Hydro, int Temp, int Cape) {
+		if ((Li > 2) || (Hydro < 20) || (Temp < -3)) {
 			return 0;
 		} else {
-			return ((AverageLi * -5) + (AverageHydro / 3) + (AverageCape / 200) + (AverageTemp / 2));
+			return ((Li * -5) + (Hydro / 3) + (Cape / 200) + (Temp / 2));
 		}
 	}
 	/*
@@ -736,7 +736,8 @@ public class Panel extends JPanel {
 					for (int i = 0; i < frontList.size(); i++) {
 
 						if (frontList.get(i).type == 1) {
-							int thunderChance = calcThunderChance() - 20 + (int) (Math.random() * (40));
+							int thunderChance = calcThunderChance(AverageLi, AverageHydro, AverageTemp, AverageCape)
+									- 20 + (int) (Math.random() * (40));
 
 							if (thunderChance >= 45) {
 								int x = frontList.get(i).x + (int) (Math.random() * (frontList.get(i).x + 20));
@@ -746,7 +747,8 @@ public class Panel extends JPanel {
 										(int) (Math.random() * 7), (int) (Math.random() * 7));
 							}
 						} else {
-							int thunderChance = calcThunderChance() - 20 + (int) (Math.random() * (40));
+							int thunderChance = calcThunderChance(AverageLi, AverageHydro, AverageTemp, AverageCape)
+									- 20 + (int) (Math.random() * (40));
 
 							if (thunderChance >= 70) {
 								int x = frontList.get(i).x + (int) (Math.random() * (frontList.get(i).x + 20));
@@ -758,13 +760,39 @@ public class Panel extends JPanel {
 						}
 
 					}
-					int thunderChance = calcThunderChance() - 20 + (int) (Math.random() * (calcThunderChance() + 20));
-					if (thunderChance >= 50) {
-						int x = 0 + (int) (Math.random() * (boundMapX - 30));
-						int y = (int) (Math.random() * (boundMapY - 30));
-						addToArrayThunder(2 + (int) (Math.random() * 6), x, y, x + 10 + (int) (Math.random() * 30),
-								y + 10 + (int) (Math.random() * 30), (int) (Math.random() * 7),
-								(int) (Math.random() * 7));
+					boolean isThunderPlaced = false;
+					for (int i = 0; i < townsList.size(); i++) {
+						isThunderPlaced = false;
+						if ((int) (Math.random() * 100) <= 20) {
+							if (calcThunderChance(townsList.get(i).li, townsList.get(i).hydro, townsList.get(i).temp,
+									townsList.get(i).cape) >= 50) {
+								int x = townsList.get(i).getX() - 50 + (int) (Math.random() * 100);
+								int y = townsList.get(i).getY() - 50 + (int) (Math.random() * 100);
+								addToArrayThunder(2 + (int) (Math.random() * 6), x, y, x + (int) (Math.random() * 20),
+										y + (int) (Math.random() * 20), (int) (Math.random() * 7),
+										(int) (Math.random() * 7));
+								isThunderPlaced = true;
+								System.out.println("lol");
+
+							}
+						}
+
+					}
+					if (!isThunderPlaced) {
+						if ((int) (Math.random() * 100) <= 70) {
+							int thunderChance = calcThunderChance(AverageLi, AverageHydro, AverageTemp, AverageCape)
+									- 20
+									+ (int) (Math.random()
+											* (calcThunderChance(AverageLi, AverageHydro, AverageTemp, AverageCape)
+													+ 20));
+							if (thunderChance >= 50) {
+								int x = 0 + (int) (Math.random() * (boundMapX - 30));
+								int y = (int) (Math.random() * (boundMapY - 30));
+								addToArrayThunder(2 + (int) (Math.random() * 6), x, y,
+										x + 10 + (int) (Math.random() * 30), y + 10 + (int) (Math.random() * 30),
+										(int) (Math.random() * 7), (int) (Math.random() * 7));
+							}
+						}
 					}
 					// Update();
 					for (int i = 0; i < thunderList.size(); i++) {
